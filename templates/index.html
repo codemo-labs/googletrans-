@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="ID">
+   <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#020617">
+    <title>Home</title>
+    <meta name="title" content="">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="og:title" content="">
+    <meta name="og:description" content="">
+    <meta name="twitter:title" content="">
+    <meta name="twitter:description" content="">
+    <meta name="og:image" content="">
+    <meta name="twitter:image" content="">
+    <meta property="og:type" content="website">
+    <meta content="summary_large_image" name="twitter:card">
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>              
+   </head>
+   <style type="text/css"> 
+      .copied{
+      background: #ff555f;
+      }    
+      /* spinner */
+      .spinner {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: rgba(0, 0, 0, 0.8); 
+      z-index: 9999; 
+      transition: opacity 0.5s ease-out;
+      }
+      .hide-spinner {
+      opacity: 0;
+      pointer-events: none; 
+      } 
+      #main-content {
+      opacity: 0; 
+      transition: opacity 0.5s ease-in; 
+      }
+      .lds-ripple {
+      display: inline-block;
+      position: relative;
+      width: 80px;
+      height: 80px;
+      }
+      .lds-ripple div {
+      position: absolute;
+      border: 4px solid white;
+      opacity: 1;
+      border-radius: 50%;
+      animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+      }
+      .lds-ripple div:nth-child(2) {
+      animation-delay: -0.5s;
+      }
+      @keyframes lds-ripple {
+      0% {
+      top: 36px;
+      left: 36px;
+      width: 0;
+      height: 0;
+      opacity: 0;
+      }
+      4.9% {
+      top: 36px;
+      left: 36px;
+      width: 0;
+      height: 0;
+      opacity: 0;
+      }
+      5% {
+      top: 36px;
+      left: 36px;
+      width: 0;
+      height: 0;
+      opacity: 1;
+      }
+      100% {
+      top: 0px;
+      left: 0px;
+      width: 72px;
+      height: 72px;
+      opacity: 0;
+      }
+      } 
+      .sectionSize {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-left: 1rem;
+      padding-right: 1rem;
+      padding-top: 3.5rem;
+      padding-bottom: 1rem;
+      }
+      .secondaryTitle {
+      background-position: left bottom;
+      background-repeat: no-repeat;
+      font-family: PT Serif, serif;
+      font-size: 1.875rem;
+      line-height: 2.25rem;
+      margin-bottom: 2rem;
+      padding-left: 4rem;
+      padding-right: 4rem;
+      padding-bottom: 2rem;
+      }
+      .waves {
+      background: ;
+      position: relative;
+      width: 100%;
+      height: 15vh;
+      margin-bottom: -7px;
+      /*Fix for safari gap*/
+      min-height: 90px;
+      max-height: 70px;
+      }
+      /* Animation */
+      .parallax>use {
+      animation: move-forever 25s cubic-bezier(0.55, 0.5, 0.45, 0.5) infinite;
+      }
+      .parallax>use:nth-child(1) {
+      animation-delay: -2s;
+      animation-duration: 7s;
+      }
+      .parallax>use:nth-child(2) {
+      animation-delay: -3s;
+      animation-duration: 10s;
+      }
+      .parallax>use:nth-child(3) {
+      animation-delay: -4s;
+      animation-duration: 13s;
+      }
+      .parallax>use:nth-child(4) {
+      animation-delay: -5s;
+      animation-duration: 20s;
+      }
+      @keyframes move-forever {
+      0% {
+      transform: translate3d(-90px, 0, 0);
+      }
+      100% {
+      transform: translate3d(85px, 0, 0);
+      }
+      }
+   </style>
+   <body>
+ 
+      
+      <!-- Input transalete -->
+      <section class="w-full md:w-[60%]" Style="margin: 2rem auto;">
+         <div>
+            <div class="flex w-[90%] ml-4 justify-between">
+               <div class="mb-4 flex">
+                  <button onclick="openLanguageModal('source')" class="bg-[#F3F4F6] rounded-md font-semibold cursor-pointer p-2 text-[#5597ff]">   
+                  <span id="selected_source_language">Deteksi bahasa</span>      
+                  </button>
+                  <input type="hidden" id="source_lang" name="source_lang">   
+               </div>
+               <!-- Language Modal -->
+               <div class="flex absolute rounded-md z-10 mt-10 bg-white border text-black p-4 w-[50%] h-[60%] md:w-[20%] md:mr-[20%]" id="sourceLangModal" style="display: none; left: 1rem; overflow-y: scroll;">
+                  <!-- Search -->
+                  <input type="text" id="searchInput1" class="p-2 w-full mb-5 bg-[#F3F4F6] rounded-md" oninput="searchLanguages('searchInput1', 'sourceLangModal')" placeholder="Search Language...">
+                  <!-- language list -->
+                  <ul>
+                     <li data-language="English" onclick="selectLanguage('en', 'source')">English</li>
+                        <li data-language="Indonesia" onclick="selectLanguage('id', 'source')">Indonesian</li>
+                        <li data-language="Jawa" onclick="selectLanguage('jv', 'source')">Jawa</li>
+                        <li data-language="Sunda" onclick="selectLanguage('su', 'source')">Sunda</li>
+                        <li data-language="Jepang" onclick="selectLanguage('ja', 'source')">Jepang</li>
+                        <li data-language="Islan" onclick="selectLanguage('is', 'source')">Islan</li>
+                        <li data-language="Italia" onclick="selectLanguage('it', 'source')">Italia</li>
+                        <li data-language="Jerman" onclick="selectLanguage('de', 'source')">Jerman</li>
+                        <li data-language="Kannada" onclick="selectLanguage('kn', 'source')">Kannada</li>
+                        <li data-language="Korea" onclick="selectLanguage('ko', 'source')">Korea</li>
+                        <li data-language="Korsika" onclick="selectLanguage('co', 'source')">Korsika</li>
+                        <li data-language="Kreol Haiti" onclick="selectLanguage('ht', 'source')">Kreol Haiti</li>
+                        <li data-language="Krio" onclick="selectLanguage('kri', 'source')">Krio</li>
+                        <li data-language="Kroat" onclick="selectLanguage('hr', 'source')">Kroat</li>
+                        <li data-language="Kurdi (Kurmanji)" onclick="selectLanguage('ku', 'source')">Kurdi (Kurmanji)</li>
+                        <li data-language="Kurdi (Sorani)" onclick="selectLanguage('ckb', 'source')">Kurdi (Sorani)</li>
+                        <li data-language="Laos" onclick="selectLanguage('lo', 'source')">Laos</li>
+                        <li data-language="Latin" onclick="selectLanguage('la', 'source')">Latin</li>
+                        <li data-language="Latvia" onclick="selectLanguage('lv', 'source')">Latvia</li>
+                        <li data-language="Lingala" onclick="selectLanguage('ln', 'source')">Lingala</li>
+                        <li data-language="Lituania" onclick="selectLanguage('lt', 'source')">Lituania</li>
+                        <li data-language="Luganda" onclick="selectLanguage('lg', 'source')">Luganda</li>
+                        <li data-language="Luksemburg" onclick="selectLanguage('lb', 'source')">Luksemburg</li>
+                        <li data-language="Magyar" onclick="selectLanguage('hu', 'source')">Magyar</li>
+                        <li data-language="Maithili" onclick="selectLanguage('mai', 'source')">Maithili</li>
+                        <li data-language="Makedonia" onclick="selectLanguage('mk', 'source')">Makedonia</li>
+                        <li data-language="Malagasi" onclick="selectLanguage('mg', 'source')">Malagasi</li>
+                        <li data-language="Malayalam" onclick="selectLanguage('ml', 'source')">Malayalam</li>
+                        <li data-language="Malta" onclick="selectLanguage('mt', 'source')">Malta</li>
+                        <li data-language="Maori" onclick="selectLanguage('mi', 'source')">Maori</li>
+                        <li data-language="Marathi" onclick="selectLanguage('mr', 'source')">Marathi</li>
+                        <li data-language="Meiteilon (Manipuri)" onclick="selectLanguage('mni', 'source')">Meiteilon (Manipuri)</li>
+                        <li data-language="Melayu" onclick="selectLanguage('ms', 'source')">Melayu</li>
+                        <li data-language="Mizo" onclick="selectLanguage('lus', 'source')">Mizo</li>
+                        <li data-language="Mongol" onclick="selectLanguage('mn', 'source')">Mongol</li>
+                        <li data-language="Nepal" onclick="selectLanguage('ne', 'source')">Nepal</li>
+                        <li data-language="Norsk" onclick="selectLanguage('no', 'source')">Norsk</li>
+                        <li data-language="Odia (Oriya)" onclick="selectLanguage('or', 'source')">Odia (Oriya)</li>
+                        <li data-language="Oromo" onclick="selectLanguage('om', 'source')">Oromo</li>
+                        <li data-language="Pashto" onclick="selectLanguage('ps', 'source')">Pashto</li>
+                        <li data-language="Polandia" onclick="selectLanguage('pl', 'source')">Polandia</li>
+                        <li data-language="Portugis" onclick="selectLanguage('pt', 'source')">Portugis</li>
+                        <li data-language="Prancis" onclick="selectLanguage('fr', 'source')">Prancis</li>
+                        <li data-language="Punjabi" onclick="selectLanguage('pa', 'source')">Punjabi</li>
+                        <li data-language="Quechua" onclick="selectLanguage('qu', 'source')">Quechua</li>
+                        <li data-language="Rumania" onclick="selectLanguage('ro', 'source')">Rumania</li>
+                        <li data-language="Rusia" onclick="selectLanguage('ru', 'source')">Rusia</li>                        
+                        <li data-language="Samoa" onclick="selectLanguage('sm ', 'source')">Samoa</li>
+                        <li data-language="Sanskerta" onclick="selectLanguage('sa', 'source')">Sanskerta</li>
+                        <li data-language="Sepedi" onclick="selectLanguage('nso', 'source')">Sepedi</li>
+                        <li data-language="Serb" onclick="selectLanguage('sr', 'source')">Serb</li>
+                        <li data-language="Sesotho" onclick="selectLanguage('st', 'source')">Sesotho</li>
+                        <li data-language="Shona" onclick="selectLanguage('sn', 'source')">Shona</li>
+                        <li data-language="Sindhi" onclick="selectLanguage('sd', 'source')">Sindhi</li>
+                        <li data-language="Sinhala" onclick="selectLanguage('si', 'source')">Sinhala</li>
+                        <li data-language="Slovakia" onclick="selectLanguage('sk', 'source')">Slovakia</li>
+                        <li data-language="Slovenia" onclick="selectLanguage('sl', 'source')">Slovenia</li>
+                        <li data-language="Somali" onclick="selectLanguage('so', 'source')">Somali</li>
+                        <li data-language="Spanyol" onclick="selectLanguage('es', 'source')">Spanyol</li>
+                        <li data-language="Swahili" onclick="selectLanguage('sw', 'source')">Swahili</li>
+                        <li data-language="Swensk" onclick="selectLanguage('sv', 'source')">Swensk</li>
+                        <li data-language="Tagalog" onclick="selectLanguage('tl', 'source')">Tagalog</li>
+                        <li data-language="Tajik" onclick="selectLanguage('tg', 'source')">Tajik</li>
+                        <li data-language="Tamil" onclick="selectLanguage('ta', 'source')">Tamil</li>
+                        <li data-language="Tatar" onclick="selectLanguage('tt', 'source')">Tatar</li>
+                        <li data-language="Telugu" onclick="selectLanguage('te', 'source')">Telugu</li>
+                        <li data-language="Thai" onclick="selectLanguage('th', 'source')">Thai</li>
+                        <li data-language="Tigrinya" onclick="selectLanguage('ti', 'source')">Tigrinya</li>
+                        <li data-language="Tsonga" onclick="selectLanguage('ts', 'source')">Tsonga</li>
+                        <li data-language="Turki" onclick="selectLanguage('tr', 'source')">Turki</li>
+                        <li data-language="Turkmen" onclick="selectLanguage('tk', 'source')">Turkmen</li>
+                        <li data-language="Twi" onclick="selectLanguage('tw', 'source')">Twi</li>
+                        <li data-language="Ukraina" onclick="selectLanguage('uk', 'source')">Ukraina</li>
+                        <li data-language="Urdu" onclick="selectLanguage('ur', 'source')">Urdu</li>
+                        <li data-language="Uyghur" onclick="selectLanguage('ug', 'source')">Uyghur</li>
+                        <li data-language="Uzbek" onclick="selectLanguage('uz', 'source')">Uzbek</li>
+                        <li data-language="Vietnam" onclick="selectLanguage('vi', 'source')">Vietnam</li>
+                        <li data-language="Wales" onclick="selectLanguage('cy', 'source')">Wales</li>
+                        <li data-language="Xhosa" onclick="selectLanguage('xh', 'source')">Xhosa</li>
+                        <li data-language="Yiddi" onclick="selectLanguage('yi', 'source')">Yiddi</li>
+                        <li data-language="Yoruba" onclick="selectLanguage('yo', 'source')">Yoruba</li>
+                        <li data-language="Yunani" onclick="selectLanguage('el', 'source')">Yunani</li>
+                        <li data-language="Zulu" onclick="selectLanguage('zu', 'source')">Zulu</li>
+                        <li data-language="Afrikans" onclick="selectLanguage('af', 'source')">Afrikans</li>
+                        <li data-language="yang" onclick="selectLanguage('sq', 'source')">Albania</li>
+                        <li data-language="Amhara" onclick="selectLanguage('am', 'source')">Amhara</li>
+                        <li data-language="Arab" onclick="selectLanguage('ar', 'source')">Arab</li>
+                        <li data-language="Armenia" onclick="selectLanguage('hy', 'source')">Armenia</li>
+                        <li data-language="Assam" onclick="selectLanguage('as', 'source')">Assam</li>
+                        <li data-language="Aymara" onclick="selectLanguage('ay', 'source')">Aymara</li>
+                        <li data-language="Azerbaijan" onclick="selectLanguage('az', 'source')">Azerbaijan</li>
+                        <li data-language="Bambara" onclick="selectLanguage('bm', 'source')">Bambara</li>
+                        <li data-language="Basque" onclick="selectLanguage('eu', 'source')">Basque</li>
+                        <li data-language="Belanda" onclick="selectLanguage('nl', 'source')">Belanda</li>
+                        <li data-language="Belarussia" onclick="selectLanguage('be', 'source')">Belarussia</li>
+                        <li data-language="Bengali" onclick="selectLanguage('bn', 'source')">Bengali</li>
+                        <li data-language="Bhojpuri" onclick="selectLanguage('bho', 'source')">Bhojpuri</li>
+                        <li data-language="Bosnia" onclick="selectLanguage('bs', 'source')">Bosnia</li>
+                        <li data-language="Bulgaria" onclick="selectLanguage('bg', 'source')">Bulgaria</li>
+                        <li data-language="Burma" onclick="selectLanguage('my', 'source')">Burma</li>
+                        <li data-language="Cebuano" onclick="selectLanguage('ceb', 'source')">Cebuano</li>
+                        <li data-language="Ceko" onclick="selectLanguage('cs', 'source')">Ceko</li>
+                        <li data-language="Chichewa" onclick="selectLanguage('ny', 'source')">Chichewa</li>
+                        <li data-language="China (Aks. Sederhana)" onclick="selectLanguage('zh-CN', 'source')">China (Aks. Sederhana)</li>
+                        <li data-language="China (Aks. Tradisional)" onclick="selectLanguage('zh-TW', 'source')">China (Aks. Tradisional)</li>
+                        <li data-language="Denmark" onclick="selectLanguage('da', 'source')">Denmark</li>
+                        <li data-language="Divehi" onclick="selectLanguage('dv', 'source')">Divehi</li>
+                        <li data-language="Dogri" onclick="selectLanguage('doi', 'source')">Dogri</li>
+                        <li data-language="Esperanto" onclick="selectLanguage('eo', 'source')">Esperanto</li>
+                        <li data-language="Estonia" onclick="selectLanguage('et', 'source')">Estonia</li>
+                        <li data-language="Ewe" onclick="selectLanguage('ee', 'source')">Ewe</li>
+                        <li data-language="Farsi" onclick="selectLanguage('fa', 'source')">Farsi</li>
+                        <li data-language="Finlandia" onclick="selectLanguage('fi', 'source')">Finlandia</li>
+                        <li data-language="Frisia" onclick="selectLanguage('fy', 'source')">Frisia</li>
+                        <li data-language="Gaelig" onclick="selectLanguage('gd', 'source')">Gaelig</li>
+                        <li data-language="Gaelik Skotlandia" onclick="selectLanguage('gd', 'source')">Gaelik Skotlandia</li>
+                        <li data-language="Galisia" onclick="selectLanguage('gl', 'source')">Galisia</li>
+                        <li data-language="Georgia" onclick="selectLanguage('ka', 'source')">Georgia</li>
+                        <li data-language="Guarani" onclick="selectLanguage('gn', 'source')">Guarani</li>
+                        <li data-language="Gujarati" onclick="selectLanguage('gu', 'source')">Gujarati</li>
+                        <li data-language="Hausa" onclick="selectLanguage('ha', 'source')">Hausa</li>
+                        <li data-language="Hawaii" onclick="selectLanguage('haw', 'source')">Hawaii</li>
+                        <li data-language="Hindi" onclick="selectLanguage('hi', 'source')">Hindi</li>
+                        <li data-language="Hmong" onclick="selectLanguage('hmn', 'source')">Hmong</li>
+                        <li data-language="Ibrani" onclick="selectLanguage('he', 'source')">Ibrani</li>
+                        <li data-language="Igbo" onclick="selectLanguage('ig', 'source')">Igbo</li>
+                        <li data-language="Ilocano" onclick="selectLanguage('ilo', 'source')">Ilocano</li>
+                        <li data-language="Katala" onclick="selectLanguage('ca', 'source')">Katala</li>
+                        <li data-language="Kazak" onclick="selectLanguage('kk', 'source')">Kazak</li>
+                        <li data-language="Khmer" onclick="selectLanguage('km', 'source')">Khmer</li>
+                        <li data-language="Kinyarwanda" onclick="selectLanguage('rw', 'source')">Kinyarwanda</li>
+                        <li data-language="Kirghiz" onclick="selectLanguage('ky', 'source')">Kirghiz</li>
+                        <li data-language="Konkani" onclick="selectLanguage('kok', 'source')">Konkani</li>
+                  </ul>
+               </div>
+               <!-- Swap language -->
+               <div class="flex">
+                  <button id="swap_language_button" onclick="swapLanguages()">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <path d="m15 12 5-4-5-4v2.999H2v2h13zm7 3H9v-3l-5 4 5 4v-3h13z"/>
+                     </svg>
+                  </button>
+               </div>
+               <!-- Translate -->
+               <div class="flex text-[#9CA3AF]">
+                  <div class="mb-4 mt-2">
+                     <button onclick="openLanguageModal('target')" class="bg-[#F3F4F6] rounded-md font-semibold cursor-pointer p-2 text-[#5597ff]">   
+                     <span id="selected_target_language">English</span>      
+                     </button>
+                     <input type="hidden" id="target_lang" name="target_lang">    
+                  </div>
+                  <!-- Language Modal -->
+                  <div class="flex absolute rounded-md z-10 mt-10 bg-white border text-black p-4 w-[50%] h-[60%] md:w-[20%] md:mr-[20%]" id="targetLangModal" style="display: none; right: 1rem; overflow-y: scroll;">
+                     <!-- Search -->
+                     <input type="text" id="searchInput2" class="p-2 w-full mb-5 bg-[#F3F4F6] rounded-md" oninput="searchLanguages('searchInput2', 'targetLangModal')" placeholder="Search Language...">
+                     <!-- laguage list -->
+                     <ul>
+                         <li data-language="English" onclick="selectLanguage('en', 'target')">English</li>
+                        <li data-language="Indonesia" onclick="selectLanguage('id', 'target')">Indonesian</li>
+                        <li data-language="Jawa" onclick="selectLanguage('jv', 'target')">Jawa</li>
+                        <li data-language="Sunda" onclick="selectLanguage('su', 'target')">Sunda</li>
+                        <li data-language="Jepang" onclick="selectLanguage('ja', 'target')">Jepang</li>
+                        <li data-language="Islan" onclick="selectLanguage('is', 'target')">Islan</li>
+                        <li data-language="Italia" onclick="selectLanguage('it', 'target')">Italia</li>
+                        <li data-language="Jerman" onclick="selectLanguage('de', 'target')">Jerman</li>
+                        <li data-language="Kannada" onclick="selectLanguage('kn', 'target')">Kannada</li>
+                        <li data-language="Korea" onclick="selectLanguage('ko', 'target')">Korea</li>
+                        <li data-language="Korsika" onclick="selectLanguage('co', 'target')">Korsika</li>
+                        <li data-language="Kreol Haiti" onclick="selectLanguage('ht', 'target')">Kreol Haiti</li>
+                        <li data-language="Krio" onclick="selectLanguage('kri', 'target')">Krio</li>
+                        <li data-language="Kroat" onclick="selectLanguage('hr', 'target')">Kroat</li>
+                        <li data-language="Kurdi (Kurmanji)" onclick="selectLanguage('ku', 'target')">Kurdi (Kurmanji)</li>
+                        <li data-language="Kurdi (Sorani)" onclick="selectLanguage('ckb', 'target')">Kurdi (Sorani)</li>
+                        <li data-language="Laos" onclick="selectLanguage('lo', 'target')">Laos</li>
+                        <li data-language="Latin" onclick="selectLanguage('la', 'target')">Latin</li>
+                        <li data-language="Latvia" onclick="selectLanguage('lv', 'target')">Latvia</li>
+                        <li data-language="Lingala" onclick="selectLanguage('ln', 'target')">Lingala</li>
+                        <li data-language="Lituania" onclick="selectLanguage('lt', 'target')">Lituania</li>
+                        <li data-language="Luganda" onclick="selectLanguage('lg', 'target')">Luganda</li>
+                        <li data-language="Luksemburg" onclick="selectLanguage('lb', 'target')">Luksemburg</li>
+                        <li data-language="Magyar" onclick="selectLanguage('hu', 'target')">Magyar</li>
+                        <li data-language="Maithili" onclick="selectLanguage('mai', 'target')">Maithili</li>
+                        <li data-language="Makedonia" onclick="selectLanguage('mk', 'target')">Makedonia</li>
+                        <li data-language="Malagasi" onclick="selectLanguage('mg', 'target')">Malagasi</li>
+                        <li data-language="Malayalam" onclick="selectLanguage('ml', 'target')">Malayalam</li>
+                        <li data-language="Malta" onclick="selectLanguage('mt', 'target')">Malta</li>
+                        <li data-language="Maori" onclick="selectLanguage('mi', 'target')">Maori</li>
+                        <li data-language="Marathi" onclick="selectLanguage('mr', 'target')">Marathi</li>
+                        <li data-language="Meiteilon (Manipuri)" onclick="selectLanguage('mni', 'target')">Meiteilon (Manipuri)</li>
+                        <li data-language="Melayu" onclick="selectLanguage('ms', 'target')">Melayu</li>
+                        <li data-language="Mizo" onclick="selectLanguage('lus', 'target')">Mizo</li>
+                        <li data-language="Mongol" onclick="selectLanguage('mn', 'target')">Mongol</li>
+                        <li data-language="Nepal" onclick="selectLanguage('ne', 'target')">Nepal</li>
+                        <li data-language="Norsk" onclick="selectLanguage('no', 'target')">Norsk</li>
+                        <li data-language="Odia (Oriya)" onclick="selectLanguage('or', 'target')">Odia (Oriya)</li>
+                        <li data-language="Oromo" onclick="selectLanguage('om', 'target')">Oromo</li>
+                        <li data-language="Pashto" onclick="selectLanguage('ps', 'target')">Pashto</li>
+                        <li data-language="Polandia" onclick="selectLanguage('pl', 'target')">Polandia</li>
+                        <li data-language="Portugis" onclick="selectLanguage('pt', 'target')">Portugis</li>
+                        <li data-language="Prancis" onclick="selectLanguage('fr', 'target')">Prancis</li>
+                        <li data-language="Punjabi" onclick="selectLanguage('pa', 'target')">Punjabi</li>
+                        <li data-language="Quechua" onclick="selectLanguage('qu', 'target')">Quechua</li>
+                        <li data-language="Rumania" onclick="selectLanguage('ro', 'target')">Rumania</li>
+                        <li data-language="Rusia" onclick="selectLanguage('ru', 'target')">Rusia</li>                        
+                        <li data-language="Samoa" onclick="selectLanguage('sm ', 'target')">Samoa</li>
+                        <li data-language="Sanskerta" onclick="selectLanguage('sa', 'target')">Sanskerta</li>
+                        <li data-language="Sepedi" onclick="selectLanguage('nso', 'target')">Sepedi</li>
+                        <li data-language="Serb" onclick="selectLanguage('sr', 'target')">Serb</li>
+                        <li data-language="Sesotho" onclick="selectLanguage('st', 'target')">Sesotho</li>
+                        <li data-language="Shona" onclick="selectLanguage('sn', 'target')">Shona</li>
+                        <li data-language="Sindhi" onclick="selectLanguage('sd', 'target')">Sindhi</li>
+                        <li data-language="Sinhala" onclick="selectLanguage('si', 'target')">Sinhala</li>
+                        <li data-language="Slovakia" onclick="selectLanguage('sk', 'target')">Slovakia</li>
+                        <li data-language="Slovenia" onclick="selectLanguage('sl', 'target')">Slovenia</li>
+                        <li data-language="Somali" onclick="selectLanguage('so', 'target')">Somali</li>
+                        <li data-language="Spanyol" onclick="selectLanguage('es', 'target')">Spanyol</li>
+                        <li data-language="Swahili" onclick="selectLanguage('sw', 'target')">Swahili</li>
+                        <li data-language="Swensk" onclick="selectLanguage('sv', 'target')">Swensk</li>
+                        <li data-language="Tagalog" onclick="selectLanguage('tl', 'target')">Tagalog</li>
+                        <li data-language="Tajik" onclick="selectLanguage('tg', 'target')">Tajik</li>
+                        <li data-language="Tamil" onclick="selectLanguage('ta', 'target')">Tamil</li>
+                        <li data-language="Tatar" onclick="selectLanguage('tt', 'target')">Tatar</li>
+                        <li data-language="Telugu" onclick="selectLanguage('te', 'target')">Telugu</li>
+                        <li data-language="Thai" onclick="selectLanguage('th', 'target')">Thai</li>
+                        <li data-language="Tigrinya" onclick="selectLanguage('ti', 'target')">Tigrinya</li>
+                        <li data-language="Tsonga" onclick="selectLanguage('ts', 'target')">Tsonga</li>
+                        <li data-language="Turki" onclick="selectLanguage('tr', 'target')">Turki</li>
+                        <li data-language="Turkmen" onclick="selectLanguage('tk', 'target')">Turkmen</li>
+                        <li data-language="Twi" onclick="selectLanguage('tw', 'target')">Twi</li>
+                        <li data-language="Ukraina" onclick="selectLanguage('uk', 'target')">Ukraina</li>
+                        <li data-language="Urdu" onclick="selectLanguage('ur', 'target')">Urdu</li>
+                        <li data-language="Uyghur" onclick="selectLanguage('ug', 'target')">Uyghur</li>
+                        <li data-language="Uzbek" onclick="selectLanguage('uz', 'target')">Uzbek</li>
+                        <li data-language="Vietnam" onclick="selectLanguage('vi', 'target')">Vietnam</li>
+                        <li data-language="Wales" onclick="selectLanguage('cy', 'target')">Wales</li>
+                        <li data-language="Xhosa" onclick="selectLanguage('xh', 'target')">Xhosa</li>
+                        <li data-language="Yiddi" onclick="selectLanguage('yi', 'target')">Yiddi</li>
+                        <li data-language="Yoruba" onclick="selectLanguage('yo', 'target')">Yoruba</li>
+                        <li data-language="Yunani" onclick="selectLanguage('el', 'target')">Yunani</li>
+                        <li data-language="Zulu" onclick="selectLanguage('zu', 'target')">Zulu</li>
+                        <li data-language="Afrikans" onclick="selectLanguage('af', 'target')">Afrikans</li>
+                        <li data-language="yang" onclick="selectLanguage('sq', 'target')">Albania</li>
+                        <li data-language="Amhara" onclick="selectLanguage('am', 'target')">Amhara</li>
+                        <li data-language="Arab" onclick="selectLanguage('ar', 'target')">Arab</li>
+                        <li data-language="Armenia" onclick="selectLanguage('hy', 'target')">Armenia</li>
+                        <li data-language="Assam" onclick="selectLanguage('as', 'target')">Assam</li>
+                        <li data-language="Aymara" onclick="selectLanguage('ay', 'target')">Aymara</li>
+                        <li data-language="Azerbaijan" onclick="selectLanguage('az', 'target')">Azerbaijan</li>
+                        <li data-language="Bambara" onclick="selectLanguage('bm', 'target')">Bambara</li>
+                        <li data-language="Basque" onclick="selectLanguage('eu', 'target')">Basque</li>
+                        <li data-language="Belanda" onclick="selectLanguage('nl', 'target')">Belanda</li>
+                        <li data-language="Belarussia" onclick="selectLanguage('be', 'target')">Belarussia</li>
+                        <li data-language="Bengali" onclick="selectLanguage('bn', 'target')">Bengali</li>
+                        <li data-language="Bhojpuri" onclick="selectLanguage('bho', 'target')">Bhojpuri</li>
+                        <li data-language="Bosnia" onclick="selectLanguage('bs', 'target')">Bosnia</li>
+                        <li data-language="Bulgaria" onclick="selectLanguage('bg', 'target')">Bulgaria</li>
+                        <li data-language="Burma" onclick="selectLanguage('my', 'target')">Burma</li>
+                        <li data-language="Cebuano" onclick="selectLanguage('ceb', 'target')">Cebuano</li>
+                        <li data-language="Ceko" onclick="selectLanguage('cs', 'target')">Ceko</li>
+                        <li data-language="Chichewa" onclick="selectLanguage('ny', 'target')">Chichewa</li>
+                        <li data-language="China (Aks. Sederhana)" onclick="selectLanguage('zh-CN', 'target')">China (Aks. Sederhana)</li>
+                        <li data-language="China (Aks. Tradisional)" onclick="selectLanguage('zh-TW', 'target')">China (Aks. Tradisional)</li>
+                        <li data-language="Denmark" onclick="selectLanguage('da', 'target')">Denmark</li>
+                        <li data-language="Divehi" onclick="selectLanguage('dv', 'target')">Divehi</li>
+                        <li data-language="Dogri" onclick="selectLanguage('doi', 'target')">Dogri</li>
+                        <li data-language="Esperanto" onclick="selectLanguage('eo', 'target')">Esperanto</li>
+                        <li data-language="Estonia" onclick="selectLanguage('et', 'target')">Estonia</li>
+                        <li data-language="Ewe" onclick="selectLanguage('ee', 'target')">Ewe</li>
+                        <li data-language="Farsi" onclick="selectLanguage('fa', 'target')">Farsi</li>
+                        <li data-language="Finlandia" onclick="selectLanguage('fi', 'target')">Finlandia</li>
+                        <li data-language="Frisia" onclick="selectLanguage('fy', 'target')">Frisia</li>
+                        <li data-language="Gaelig" onclick="selectLanguage('gd', 'target')">Gaelig</li>
+                        <li data-language="Gaelik Skotlandia" onclick="selectLanguage('gd', 'target')">Gaelik Skotlandia</li>
+                        <li data-language="Galisia" onclick="selectLanguage('gl', 'target')">Galisia</li>
+                        <li data-language="Georgia" onclick="selectLanguage('ka', 'target')">Georgia</li>
+                        <li data-language="Guarani" onclick="selectLanguage('gn', 'target')">Guarani</li>
+                        <li data-language="Gujarati" onclick="selectLanguage('gu', 'target')">Gujarati</li>
+                        <li data-language="Hausa" onclick="selectLanguage('ha', 'target')">Hausa</li>
+                        <li data-language="Hawaii" onclick="selectLanguage('haw', 'target')">Hawaii</li>
+                        <li data-language="Hindi" onclick="selectLanguage('hi', 'target')">Hindi</li>
+                        <li data-language="Hmong" onclick="selectLanguage('hmn', 'target')">Hmong</li>
+                        <li data-language="Ibrani" onclick="selectLanguage('he', 'target')">Ibrani</li>
+                        <li data-language="Igbo" onclick="selectLanguage('ig', 'target')">Igbo</li>
+                        <li data-language="Ilocano" onclick="selectLanguage('ilo', 'target')">Ilocano</li>
+                        <li data-language="Katala" onclick="selectLanguage('ca', 'target')">Katala</li>
+                        <li data-language="Kazak" onclick="selectLanguage('kk', 'target')">Kazak</li>
+                        <li data-language="Khmer" onclick="selectLanguage('km', 'target')">Khmer</li>
+                        <li data-language="Kinyarwanda" onclick="selectLanguage('rw', 'target')">Kinyarwanda</li>
+                        <li data-language="Kirghiz" onclick="selectLanguage('ky', 'target')">Kirghiz</li>
+                        <li data-language="Konkani" onclick="selectLanguage('kok', 'target')">Konkani</li>
+                     </ul>
+                     
+                  </div>
+                  <!-- End laguage Modal -->
+               </div>
+            </div>
+            <div>
+               <button class="absolute mt-5 bg-[#F3F4F6] rounded-md font-semibold md:mr-[21%] cursor-pointer p-2" style="right: 1rem;" onclick="translateText()">
+                  <span>
+                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <path d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"/>
+                     </svg>
+                  </span>
+               </button>
+               <div class="absolute ml-3 md:ml-[2%] md:mt-[13%] mt-[40%] bg-[#2b82ff] rounded-full" style="padding: 3px 6px;">
+                  <button id="startRecognitionButton" onclick="startRecognition()">
+                     <span style="margin: 0 auto;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                           <path d="M16 12V6c0-2.217-1.785-4.021-3.979-4.021a.933.933 0 0 0-.209.025A4.006 4.006 0 0 0 8 6v6c0 2.206 1.794 4 4 4s4-1.794 4-4zm-6 0V6c0-1.103.897-2 2-2a.89.89 0 0 0 .163-.015C13.188 4.06 14 4.935 14 6v6c0 1.103-.897 2-2 2s-2-.897-2-2z" fill="#ffffff"/>
+                           <path d="M6 12H4c0 4.072 3.061 7.436 7 7.931V22h2v-2.069c3.939-.495 7-3.858 7-7.931h-2c0 3.309-2.691 6-6 6s-6-2.691-6-6z" fill="#ffffff"/>
+                        </svg>
+                     </span>
+                  </button>
+                  <button id="stopRecognitionButton" onclick="stopRecognition()" style="display: none;">
+                     <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                           <path d="m21.707 20.293-3.388-3.388A7.942 7.942 0 0 0 20 12.021h-2a5.95 5.95 0 0 1-1.109 3.456l-1.452-1.452c.348-.591.561-1.27.561-2.004v-6C16 3.804 14.215 2 12.021 2c-.07 0-.14.009-.209.025A4.005 4.005 0 0 0 8 6.021v.565L3.707 2.293 2.293 3.707l18 18 1.414-1.414zM10 6.021c0-1.103.897-2 2-2a.918.918 0 0 0 .164-.015C13.188 4.08 14 4.956 14 6.021v6c0 .172-.029.335-.071.494L10 8.586V6.021zm-4 6H4c0 4.072 3.06 7.436 7 7.931v2.069h2v-2.07a7.993 7.993 0 0 0 2.218-.611l-1.558-1.558a5.979 5.979 0 0 1-1.66.239c-3.309 0-6-2.692-6-6z" fill="#ffffff"/>
+                           <path d="M8.011 12.132a3.993 3.993 0 0 0 3.877 3.877l-3.877-3.877z" fill="#ffffff"/>
+                        </svg>
+                     </span>
+                  </button>
+               </div>
+               <div>
+                  <textarea type="text" id="text" name="text" placeholder="Add your language..." class="p-9 focus:outline-1 focus:outline-blue-500 font-bold border-[0.1px] resize-none h-[190px] border-[#9EA5B1] rounded-md w-full p-6"></textarea> 
+               </div>
+            </div>
+            <div class="mt-10">
+               <div class="absolute mt-[43%] ml-4 md:mt-[14%]"">
+                  <button id="copyButton" type="button">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <path d="M19 3h-2.25a1 1 0 0 0-1-1h-7.5a1 1 0 0 0-1 1H5c-1.103 0-2 .897-2 2v15c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2V5c0-1.103-.897-2-2-2zm0 17H5V5h2v2h10V5h2v15z"/>
+                     </svg>
+                  </button>
+                  <button id="successButton" type="button" style="display: none;">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <path d="m10.933 13.519-2.226-2.226-1.414 1.414 3.774 3.774 5.702-6.84-1.538-1.282z"/>
+                        <path d="M19 3H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2V5c0-1.103-.897-2-2-2zM5 19V5h14l.002 14H5z"/>
+                     </svg>
+                  </button>
+               </div>
+               <textarea id="translated_text" placeholder="" class="copy p-2 focus:outline-1 focus:outline-blue-500 font-bold border-[0.1px] resize-none h-[190px] border-[#9EA5B1] rounded-md w-full p-6"></textarea>
+               <button class="absolute right-5 mt-[40%] bg-[#2b82ff] rounded-full md:mt-[13%] md:mr-[20%]"  style="padding: 6px 6px;" id="speak_button">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                     <path d="M16 21c3.527-1.547 5.999-4.909 5.999-9S19.527 4.547 16 3v2c2.387 1.386 3.999 4.047 3.999 7S18.387 17.614 16 19v2z" fill="#ffffff"/>
+                     <path d="M16 7v10c1.225-1.1 2-3.229 2-5s-.775-3.9-2-5zM4 17h2.697l5.748 3.832a1.004 1.004 0 0 0 1.027.05A1 1 0 0 0 14 20V4a1 1 0 0 0-1.554-.832L6.697 7H4c-1.103 0-2 .897-2 2v6c0 1.103.897 2 2 2zm0-8h3c.033 0 .061-.016.093-.019a1.027 1.027 0 0 0 .38-.116c.026-.015.057-.017.082-.033L12 5.868v12.264l-4.445-2.964c-.025-.017-.056-.02-.082-.033a.986.986 0 0 0-.382-.116C7.059 15.016 7.032 15 7 15H4V9z" fill="#ffffff"/>
+                  </svg>
+               </button>
+            </div>
+         </div>
+      </section>
+      <div style="margin-bottom: 70%;"></div>
+      <!-- Footer -->
+      <footer class="bg-white rounded-lg m-4 dark:bg-gray-800">
+         <div class="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
+            <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2023 <a href="https://flowbite.com/" class="hover:underline">dioarafi™</a>. All Rights Reserved.
+            </span>
+            <ul class="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-500 dark:text-gray-400 sm:mt-0">
+               <li>
+                  <a href="#" class="mr-4 hover:underline md:mr-6 ">About</a>
+               </li>
+               <li>
+                  <a href="#" class="mr-4 hover:underline md:mr-6">Privacy Policy</a>
+               </li>
+               <li>
+                  <a href="#" class="mr-4 hover:underline md:mr-6">Licensing</a>
+               </li>
+               <li>
+                  <a href="#" class="hover:underline">Contact</a>
+               </li>
+            </ul>
+         </div>
+      </footer>
+
+      <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+      
+   </body>
+                    </html>
+                                                                                                      
